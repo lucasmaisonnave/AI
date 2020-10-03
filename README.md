@@ -8,3 +8,4 @@ Here are my differents AI programs in C++ which implement and solve differents g
 ### Implementation of the AI : 
 First i wanted to implement dpll algorithm in order to solve all the solvable minsweeper but I decided to just implement an AI using 2 simple rule and see its efficency:
 First rule : 
+![AI Design](images/demineur2.JPG)
