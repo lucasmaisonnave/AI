@@ -6,8 +6,13 @@ Here are my differents AI programs in C++ which implement and solve differents g
 ![AI Design](images/demineur1.JPG)
 
 ### Implementation of the AI : 
-First i wanted to implement dpll algorithm in order to solve all the solvable minsweeper but I decided to just implement an AI using 2 simple rule and see its efficency:
+At first i wanted to implement dpll algorithm in order to solve all the solvable minsweeper but I decided to just implement an AI using 2 simple rules and see its efficency:
+For each revealed case wich has unrevealed neighbors the AI count the number of unknown bombs and the number of unreveal neighbors (function KparmiN).
 
  - First rule
 
 ![AI Design](images/demineur2.JPG)
+If there are as many unknown bombs as the number of unrevealed case, we can flag all the unrevealed neighbors. In the case there is 1 bomb for 1 unknown case so we can flag this case.
+
+  - Second rule
+  
