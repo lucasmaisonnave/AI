@@ -27,6 +27,6 @@ If there are as many unknown bombs as the number of unrevealed case, we can flag
  
  ## Sliding puzzle
  
-This AI uses A* algorithm to find a solution to any sliding puzzle problem. You can chose to generate randomly a puzzle or you can type it in the variable "init" (line 27 from Taquin.cpp) by changing the value of TAQUIN_ALEATOIRE (line 19 from Taquin.cpp). You can also change the target puzzle with the variable "goal" (line 21). Once you lanched the program you just have to press the space bar to start A*. The terminal shows you the progress of A*
+This AI uses A* algorithm to find a solution to any sliding puzzle problem. You can chose to generate randomly a puzzle or you can type it in the variable "init" (line 27 from Taquin.cpp) by changing the value of TAQUIN_ALEATOIRE (line 19 from Taquin.cpp). You can also change the target puzzle with the variable "goal" (line 21). Once you lanched the program you just have to press the space bar to start A*. The terminal shows you the progress of A*. I decided to use the Manhattan heuristic for A* but I also coded the WrongPiece heuristic and you can change it with the lambda function heuristic (line 242).
 
 ![AI Design](images/puzzle1.JPG)
