@@ -47,6 +47,6 @@ Solved Sudoku :
 
 ## Tic-Tac-Toe
 
-With this program you can play against an AI using MINIMAX algorithm
+With this program you can play against an AI using MiniMax algorithm
 
 
