@@ -6,7 +6,7 @@ using namespace olc;
 #define MORPION_SIZE 3
 #define X 1
 #define O -1
-#define WHO_PLAYS 0 //1 : AI, 0 : YOU
+#define WHO_PLAYS_FIRST 0 //1 : AI, 0 : YOU
 #define INF 10000
 
 #define COUCHE_MAX 5
@@ -40,7 +40,7 @@ class Morpion : public PixelGameEngine
 
 
 	struct sEtat* Etat = nullptr;	// -1 : O ; 0 : vide ; 1 : X
-	bool AI_PLAY = WHO_PLAYS;
+	bool AI_PLAY = WHO_PLAYS_FIRST;
 	bool end = false;
 public:
 	Morpion()
@@ -280,7 +280,7 @@ public:
 			for (int x = 0; x < MORPION_SIZE; x++)
 				for (int y = 0; y < MORPION_SIZE; y++)
 					Etat->tab[y * MORPION_SIZE + x] = 0;
-			AI_PLAY = WHO_PLAYS;
+			AI_PLAY = WHO_PLAYS_FIRST;
 		}
 
 
