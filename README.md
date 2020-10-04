@@ -17,3 +17,7 @@ If there are as many unknown bombs as the number of unrevealed case, we can flag
 
   - Second rule
   
+  ![AI Design](images/demineur3.JPG)
+  
+  If there is 0 unknown bomb for n unrevealed cases, we can reveal them all. In this case the square in the middle tells us there are 2 bombs but there is 0 unknown bomb so we can reveal all the unknown cases.
+  
