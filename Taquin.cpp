@@ -19,14 +19,14 @@ using namespace std;
 #define TAQUIN_ALEATOIRE 1	//1 : random puzzle, 0 : you can chose
 
 int goal[TAQUIN_SIZE* TAQUIN_SIZE] = {  1,2,3,
-										4,5,6,
-										7,8,0};
+					4,5,6,
+					7,8,0};
 
 
 
 int init[TAQUIN_SIZE* TAQUIN_SIZE] = {	1,2,3,
-										4,5,6,
-										7,8,0};
+					4,0,6,
+					7,5,8};
 
 class Taquin : public PixelGameEngine
 {
@@ -234,7 +234,7 @@ public:
 				for (int y = 0; y < TAQUIN_SIZE; y++)
 				{
 					int val = a->state[y * TAQUIN_SIZE + x];
-					cmpt += std::abs(val / TAQUIN_SIZE - _posGoal[val] / TAQUIN_SIZE) + std::abs(val % TAQUIN_SIZE - _posGoal[val] % TAQUIN_SIZE);
+					cmpt += std::abs(y - _posGoal[val] / TAQUIN_SIZE) + std::abs(x - _posGoal[val] % TAQUIN_SIZE);
 				}
 			}
 			return cmpt;
@@ -253,7 +253,6 @@ public:
 
 		while (!listNotTestedNodes.empty() && nodeCurrent != nodeEnd)// Find absolutely shortest path // && nodeCurrent != nodeEnd)
 		{
-			std::cout << listNotTestedNodes.size() << std::endl;
 			// Sort Untested nodes by global goal, so lowest is first
 			listNotTestedNodes.sort([](const sNode* lhs, const sNode* rhs) { return lhs->fGlobalGoal < rhs->fGlobalGoal; });
 			while (!listNotTestedNodes.empty() && listNotTestedNodes.front()->bVisited)
@@ -263,6 +262,7 @@ public:
 
 			nodeCurrent = listNotTestedNodes.front();
 			nodeCurrent->bVisited = true; // We only explore a node once
+			cout << "Distance to goal : " << nodeCurrent->fGlobalGoal - nodeCurrent->fLocalGoal << endl;
 
 			//Generation of neighbours
 			for (int dir = 0; dir < DIR_END; dir++)
