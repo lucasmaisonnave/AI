@@ -23,3 +23,10 @@ If there are as many unknown bombs as the number of unrevealed case, we can flag
   
   
  These 2 simple rules can solve a lots of differents minsweeper but can't solve them all, we can now try to implement dpll to see the difference.
+ 
+ 
+ ## Sliding puzzle
+ 
+This AI uses A* algorithm to find a solution to any sliding puzzle problem. You can chose to generate randomly a puzzle or you can type it in the variable "init" (line 27 from Taquin.cpp) by changing the value of TAQUIN_ALEATOIRE (line 19 from Taquin.cpp). You can also change the target puzzle with the variable "goal" (line 21). Once you lanched the program you just have to press the space bar to start A*. The terminal shows you the progress of A*
+
+![AI Design](images/puzzle1.JPG)
