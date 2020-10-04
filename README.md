@@ -30,3 +30,10 @@ If there are as many unknown bombs as the number of unrevealed case, we can flag
 This AI uses A* algorithm to find a solution to any sliding puzzle problem. You can chose to generate randomly a puzzle or you can type it in the variable "init" (line 27 from Taquin.cpp) by changing the value of TAQUIN_ALEATOIRE (line 19 from Taquin.cpp). You can also change the target puzzle with the variable "goal" (line 21). Once you lanched the program you just have to press the space bar to start A*. The terminal shows you the progress of A*. I decided to use the Manhattan heuristic for A* but I also coded the WrongPiece heuristic and you can change it with the lambda function heuristic (line 242).
 
 ![AI Design](images/puzzle1.JPG)
+
+
+## Sudoku
+
+For a Sudoku AI I used CSP theory and I decided to implement AC-3 algorithm to solve any CSP problem such as sudoku. AC-3 is able to solve easy CSP problem with a lot of input variables, so if you want to try the AI you have to try with an easy sudoku. Once you lanched the program just press the space bar to start the algorithm. You can change the input suduku with the variable input (line 50 from Sudoku.cpp)
+
+![AI Design](images/sudoku1.JPG) ![AI Design](images/sudoku2.JPG)
