@@ -48,6 +48,7 @@ Solved Sudoku :
 ## Tic-Tac-Toe
 
 With this program you can play against an AI using MiniMax algorithm. You can change the size of the tictactoe by changing MORPION_SIZE (line 6 from Morpion.cpp)
+
 ![AI Design](images/tictactoe.JPG)
 
 
