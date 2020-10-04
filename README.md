@@ -21,3 +21,5 @@ If there are as many unknown bombs as the number of unrevealed case, we can flag
   
   If there is 0 unknown bomb for n unrevealed cases, we can reveal them all. In this case the square in the middle tells us there are 2 bombs but there is 0 unknown bomb (2 cases flaged) so we can reveal all the unknown cases.
   
+  
+ These 2 simple rules can solve a lots of differents minsweeper but can't solve them all, we can now try to implement dpll to see the difference.
