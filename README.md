@@ -36,4 +36,10 @@ This AI uses A* algorithm to find a solution to any sliding puzzle problem. You 
 
 For a Sudoku AI I used CSP theory and I decided to implement AC-3 algorithm to solve any CSP problem such as sudoku. AC-3 is able to solve easy CSP problem with a lot of input variables, so if you want to try the AI you have to try with an easy sudoku. Once you lanched the program just press the space bar to start the algorithm. You can change the input suduku with the variable input (line 50 from Sudoku.cpp)
 
-![AI Design](images/sudoku1.JPG) ![AI Design](images/sudoku2.JPG)
+Input Sudoku
+
+![AI Design](images/sudoku1.JPG) 
+
+Solved Sudoku
+
+![AI Design](images/sudoku2.JPG)
