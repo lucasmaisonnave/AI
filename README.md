@@ -12,6 +12,7 @@ For each revealed case wich has unrevealed neighbors the AI count the number of 
  - First rule
 
 ![AI Design](images/demineur2.JPG)
+
 If there are as many unknown bombs as the number of unrevealed case, we can flag all the unrevealed neighbors. In the case there is 1 bomb for 1 unknown case so we can flag this case.
 
   - Second rule
