@@ -52,3 +52,9 @@ With this program you can play against an AI using MiniMax algorithm. You can ch
 ![AI Design](images/tictactoe.JPG)
 
 
+## Game of Life
+Here you can play the game of life, you can stop time by clicking shift button and a left click add a cell.
+
+![AI Design](images/gameoflife.JPG)
+
+
