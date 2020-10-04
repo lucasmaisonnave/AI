@@ -49,4 +49,6 @@ Solved Sudoku :
 
 With this program you can play against an AI using MiniMax algorithm
 
+![AI Design](images/tictactoe.JPG)
+
 
