@@ -28,6 +28,10 @@ If there are as many unknown bombs as the number of unrevealed case, we can flag
   
  These 2 simple rules can solve a lots of differents minsweeper but can't solve them all, we can now try to implement dpll to see the difference.
  
+ ![AI Design](images/demineur4.JPG)
+ 
+ This AI is able to solve such a problem in about 30 micro second
+ 
  
  ## Sliding puzzle
  
