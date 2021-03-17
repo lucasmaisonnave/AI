@@ -1,5 +1,5 @@
 # AI
-Here are my differents AI programs in C++ which implement and solve differents games like the minesweeper game, the sliding puzzle, sudoku, tic tac toe and the game of life
+Here are my differents AI programs in C++ which implement and solve differents games like the minesweeper game, the sliding puzzle, sudoku, tic tac toe, the game of life and chess
 
 ## Installation/Execution
 I recommand using Visual Studio or CLion to built and compile without makefile.
@@ -64,5 +64,8 @@ With this program you can play against an AI using MiniMax algorithm. You can ch
 Here you can play the game of life, you can stop time by clicking shift button and a left click add a cell.
 
 ![AI Design](images/gameoflife.JPG)
+
+## Chess
+
 
 
