@@ -5,7 +5,7 @@
 
 #define INF 100000
 #define NB_COUPS 6
-#define COUCHE_MAX 5
+int COUCHE_MAX = 5;
 int nb_coups = 0;
 typedef struct Action_Value
 {

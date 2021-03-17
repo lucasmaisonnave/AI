@@ -3,9 +3,10 @@
 using namespace std;
 #define CHESS_SIZE 8
 #define SGN(l) (l >= 0 ? 1 : -1)
-#define AI_SIDE NOIR
+
 enum PIECES { FOU, ROI, CAVALIER, PION, DAME, TOUR, VIDE };
 enum COULEUR { NOIR, BLANC };
+int AI_SIDE = NOIR;
 
 typedef struct CASE {
 	int type;
