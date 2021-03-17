@@ -197,8 +197,8 @@ public:
 		//Draw coup précédent
 		if (prec_action.c1 >= 0 && prec_action.l1 >= 0 && prec_action.c2 >= 0 && prec_action.l2 >= 0)
 		{
-				FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c1 : CHESS_SIZE - 1 - prec_action.c1) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l1 : CHESS_SIZE - 1 - prec_action.l1) * nsquare_size, nsquare_size, nsquare_size, BLUE);
-				FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c2 : CHESS_SIZE - 1 - prec_action.c2) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l2 : CHESS_SIZE - 1 - prec_action.l2) * nsquare_size, nsquare_size, nsquare_size, BLUE);
+			FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c1 : CHESS_SIZE - 1 - prec_action.c1) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l1 : CHESS_SIZE - 1 - prec_action.l1) * nsquare_size, nsquare_size, nsquare_size, BLUE);
+			FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c2 : CHESS_SIZE - 1 - prec_action.c2) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l2 : CHESS_SIZE - 1 - prec_action.l2) * nsquare_size, nsquare_size, nsquare_size, BLUE);
 		}
 		//Draw lines
 		for (int x = 0; x <= CHESS_SIZE; x++)
