@@ -104,16 +104,18 @@ public:
 		//On test les clics de souris
 		if (GetMouse(0).bPressed && PointInRect(mousePos, Plateau))
 		{
-			int x = (mousePos.x - x0) / nsquare_size;
-			int y = (mousePos.y - y0) / nsquare_size;
-			pos_souris_prec.x = x;
-			pos_souris_prec.y = y;
-			Csouris = chess.getCase(x,y);
+			int x = AI_SIDE == BLANC ? (mousePos.x - x0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.x - x0) / nsquare_size;
+			int y = AI_SIDE == BLANC ? (mousePos.y - y0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.y - y0) / nsquare_size;
+			if (chess.getCase(x, y).couleur != AI_SIDE) {
+				pos_souris_prec.x = x;
+				pos_souris_prec.y = y;
+				Csouris = chess.getCase(x, y);
+			}
 		}
 		else if (GetMouse(0).bReleased)//On relache le clic on remet le pion choisi pour l'instant
 		{
-			int x = (mousePos.x - x0) / nsquare_size;
-			int y = (mousePos.y - y0) / nsquare_size;
+			int x = AI_SIDE == BLANC ? (mousePos.x - x0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.x - x0) / nsquare_size;
+			int y = AI_SIDE == BLANC ? (mousePos.y - y0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.y - y0) / nsquare_size;
 			if (chess.play(pos_souris_prec.x, pos_souris_prec.y, x, y)) {
 				prec_action = { pos_souris_prec.x, pos_souris_prec.y, x, y };
 				AI_PLAY = !AI_PLAY;
@@ -137,17 +139,17 @@ public:
 		FillRect(0, 0, ScreenWidth(), ScreenHeight(), WHITE);
 
 		//Draw squares
-		for (int x = 1; x < CHESS_SIZE; x+=2)
-			for (int y = 0; y < CHESS_SIZE; y += 2)
+		for (int x = AI_SIDE == BLANC ? 0 : 1; x < CHESS_SIZE; x += 2)
+			for (int y = AI_SIDE == BLANC ? 1 : 0; y < CHESS_SIZE; y += 2)
 				FillRect(x0 + x * nsquare_size, y0 + y * nsquare_size, nsquare_size, nsquare_size, DARK_GREY);
-		for (int x = 0; x < CHESS_SIZE; x += 2)
-			for (int y = 1; y < CHESS_SIZE; y += 2)
+		for (int x = AI_SIDE == BLANC ? 1 : 0; x < CHESS_SIZE; x += 2)
+			for (int y = AI_SIDE == BLANC ? 0 : 1; y < CHESS_SIZE; y += 2)
 				FillRect(x0 + x * nsquare_size, y0 + y * nsquare_size, nsquare_size, nsquare_size, DARK_GREY);
 		//Draw coup précédent
 		if (prec_action.c1 >= 0 && prec_action.l1 >= 0 && prec_action.c2 >= 0 && prec_action.l2 >= 0)
 		{
-			FillRect(x0 + prec_action.c1 * nsquare_size, y0 + prec_action.l1 * nsquare_size, nsquare_size, nsquare_size, BLUE);
-			FillRect(x0 + prec_action.c2 * nsquare_size, y0 + prec_action.l2 * nsquare_size, nsquare_size, nsquare_size, BLUE);
+				FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c1 : CHESS_SIZE - 1 - prec_action.c1) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l1 : CHESS_SIZE - 1 - prec_action.l1) * nsquare_size, nsquare_size, nsquare_size, BLUE);
+				FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c2 : CHESS_SIZE - 1 - prec_action.c2) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l2 : CHESS_SIZE - 1 - prec_action.l2) * nsquare_size, nsquare_size, nsquare_size, BLUE);
 		}
 		//Draw lines
 		for (int x = 0; x <= CHESS_SIZE; x++)
@@ -158,8 +160,8 @@ public:
 		//Draw Sprites
 		for (int x = 0; x < CHESS_SIZE; x++)
 			for (int y = 0; y < CHESS_SIZE; y++)
-				if(chess.getCase(x, y).type != VIDE && (x != pos_souris_prec.x || y != pos_souris_prec.y))
-					DrawSprite(x0 + x * nsquare_size, y0 + y * nsquare_size, Pions[chess.getCase(x, y).couleur][chess.getCase(x, y).type]);
+				if (chess.getCase(x, y).type != VIDE && (x != pos_souris_prec.x || (y != pos_souris_prec.y)))
+						DrawSprite(x0 + (AI_SIDE == BLANC ? x : CHESS_SIZE - 1 - x) * nsquare_size, y0 + (AI_SIDE == BLANC ? y : CHESS_SIZE - 1 - y) * nsquare_size, Pions[chess.getCase(x, y).couleur][chess.getCase(x, y).type]);
 		//Draw sprite de la souris
 		if(Csouris.type != VIDE)
 			DrawSprite(mousePos.x - Pions[Csouris.couleur][Csouris.type]->width/2, mousePos.y - Pions[Csouris.couleur][Csouris.type]->height / 2, Pions[Csouris.couleur][Csouris.type]);
