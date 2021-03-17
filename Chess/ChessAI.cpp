@@ -120,7 +120,7 @@ public:
 			if (PointInRect(mousePos, Plateau)) {
 				int x = AI_SIDE == BLANC ? (mousePos.x - x0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.x - x0) / nsquare_size;
 				int y = AI_SIDE == BLANC ? (mousePos.y - y0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.y - y0) / nsquare_size;
-				if (chess.getCase(x, y).couleur != AI_SIDE) {
+				if (chess.getCase(x, y).couleur != AI_SIDE && start) {
 					pos_souris_prec.x = x;
 					pos_souris_prec.y = y;
 					Csouris = chess.getCase(x, y);
