@@ -66,6 +66,6 @@ Here you can play the game of life, you can stop time by clicking shift button a
 ![AI Design](images/gameoflife.JPG)
 
 ## Chess
-
+AI using Minimax to play chess. You can choose your side and the level of the AI.
 ![AI Design](images/chess.JPG)
 
