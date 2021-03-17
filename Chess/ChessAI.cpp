@@ -7,6 +7,7 @@
 using namespace olc;
 using namespace std;
 #define WHO_PLAYS_FIRST AI_SIDE == BLANC? 1:0 //1 : AI, 0 : YOU
+
 struct Rect
 {
 	int x;
@@ -15,10 +16,10 @@ struct Rect
 	int h;
 };
 
-bool PointInRect(v2d_generic<int>* p, struct Rect* r)
+bool PointInRect(const v2d_generic<int>& p, const struct Rect& r)
 {
-	return ((p->x >= r->x) && (p->x < (r->x + r->w)) &&
-		(p->y >= r->y) && (p->y < (r->y + r->h))) ? true : false;
+	return ((p.x >= r.x) && (p.x < (r.x + r.w)) &&
+		(p.y >= r.y) && (p.y < (r.y + r.h))) ? true : false;
 }
 
 class AIGame : public PixelGameEngine
@@ -31,6 +32,7 @@ class AIGame : public PixelGameEngine
 	v2d_generic<int> pos_souris_prec;
 	AI ai;
 	Action prec_action = { -1,-1,-1,-1 };
+
 public:
 	AIGame()
 	{
@@ -85,6 +87,7 @@ public:
 		{
 			prec_action = ai.AI_Play(chess);
 			chess.play(prec_action);
+			nb_coups++;
 			AI_PLAY = false;
 		}
 
@@ -99,7 +102,7 @@ public:
 
 		
 		//On test les clics de souris
-		if (GetMouse(0).bPressed && PointInRect(&mousePos, &Plateau))
+		if (GetMouse(0).bPressed && PointInRect(mousePos, Plateau))
 		{
 			int x = (mousePos.x - x0) / nsquare_size;
 			int y = (mousePos.y - y0) / nsquare_size;
@@ -114,6 +117,7 @@ public:
 			if (chess.play(pos_souris_prec.x, pos_souris_prec.y, x, y)) {
 				prec_action = { pos_souris_prec.x, pos_souris_prec.y, x, y };
 				AI_PLAY = !AI_PLAY;
+				nb_coups++;
 			}
 			
 			pos_souris_prec.x = -1;
@@ -125,6 +129,7 @@ public:
 		{
 			chess = Chess();
 			AI_PLAY = WHO_PLAYS_FIRST;
+			nb_coups = 0;
 			prec_action = { -1,-1,-1,-1 };
 		}
 
@@ -178,4 +183,5 @@ int main()
 	AIGame game;
 	game.Construct(1080, 720, 1, 1);
 	game.Start();
+	return 0;
 }

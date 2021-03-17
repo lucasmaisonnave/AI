@@ -1,29 +1,32 @@
 #pragma once
 #include "Chess.h"
 #include <vector>
-#define AI_SIDE NOIR
 
-#define INF 10000
 
-#define COUCHE_MAX 6
-struct Action_Value
+#define INF 100000
+#define NB_COUPS 6
+#define COUCHE_MAX 5
+int nb_coups = 0;
+typedef struct Action_Value
 {
 	Action action;
 	int value;
 };
 class AI {
+private:
 	int Eval(const Chess& etat)
 	{
-		int eval = etat.getNb_Piece(AI_SIDE, PION) + etat.getNb_Piece(AI_SIDE, CAVALIER) * 3 + etat.getNb_Piece(AI_SIDE, FOU) * 3 + etat.getNb_Piece(AI_SIDE, TOUR) * 5 + etat.getNb_Piece(AI_SIDE, DAME) * 9
-			- (etat.getNb_Piece(!AI_SIDE, PION) + etat.getNb_Piece(!AI_SIDE, CAVALIER) * 3 + etat.getNb_Piece(!AI_SIDE, FOU) * 3 + etat.getNb_Piece(!AI_SIDE, TOUR) * 5 + etat.getNb_Piece(!AI_SIDE, DAME) * 9);
-		return (etat.getNb_Piece(AI_SIDE, ROI) < 1 ? -INF : (etat.getNb_Piece(!AI_SIDE, ROI) < 1 ? INF : eval));
-	}const
+		//if(nb_coups < NB_COUPS)
+			return Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size() + etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
+		//return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
 
-		bool Test_Arret(const Chess& etat, int d) const
-	{
-		return d >= COUCHE_MAX || etat.getNb_Piece(BLANC, ROI) < 1 || etat.getNb_Piece(NOIR, ROI) < 1;
 	}
-	void Action_Tour(std::vector<Action>& actions, Chess& etat, int i, int j) {
+
+	bool Test_Arret(const Chess& etat, int d) const
+	{
+		return d >= COUCHE_MAX || etat.getNb_Piece(BLANC, ROI) == 0 || etat.getNb_Piece(NOIR, ROI) == 0;
+	}
+	void Action_Tour(vector<Action>& actions, Chess& etat, int i, int j) const {
 		//haut
 		for (int l = j - 1; l >= 0; l--)
 		{
@@ -31,16 +34,16 @@ class AI {
 			if (etat.play(action, true))
 				actions.push_back(action);
 			else
-				break;	//Potentiellement source de conflit avec le break du switch
+				break;	
 		}
 		//bas
-		for (int l = j + 1; l >= 0; l--)
+		for (int l = j + 1; l < CHESS_SIZE; l++)
 		{
 			Action action = { i,j,i,l };
 			if (etat.play(action, true))
 				actions.push_back(action);
 			else
-				break;	//Potentiellement source de conflit avec le break du switch
+				break;
 		}
 		//droit
 		for (int c = i + 1; c < CHESS_SIZE; c++)
@@ -49,7 +52,7 @@ class AI {
 			if (etat.play(action, true))
 				actions.push_back(action);
 			else
-				break;	//Potentiellement source de conflit avec le break du switch
+				break;
 		}
 		//gauche
 		for (int c = i - 1; c >= 0; c--)
@@ -58,10 +61,10 @@ class AI {
 			if (etat.play(action, true))
 				actions.push_back(action);
 			else
-				break;	//Potentiellement source de conflit avec le break du switch
+				break;
 		}
 	}
-	void Action_Fou(std::vector<Action>& actions, Chess& etat, int i, int j) {
+	void Action_Fou(vector<Action>& actions, Chess& etat, int i, int j) {
 		//Diag gauche haut
 		int l = j - 1;
 		for (int c = i - 1; c >= 0 && l >= 0; c--, l--)
@@ -104,14 +107,14 @@ class AI {
 		}
 	}
 
-	std::vector<Action> Actions(Chess& etat, int col)	//Retourne les actions possibles sur état
+	vector<Action> Actions(Chess etat, int col)	//Retourne les actions possibles sur état
 	{
-		std::vector<Action> actions;
+		vector<Action> actions;
 		for (int i = 0; i < CHESS_SIZE; i++)
 			for (int j = 0; j < CHESS_SIZE; j++)
 				if (etat.getCase(i, j).type != VIDE && etat.getCase(i, j).couleur == col)
 				{
-					int s = etat.getCase(i, j).couleur == NOIR ? -1 : 1;
+					int s = col == NOIR ? -1 : 1;
 					switch (etat.getCase(i, j).type) {
 					case PION:
 						//On avance de 1
@@ -143,8 +146,8 @@ class AI {
 								if (etat.play(action, true))
 									actions.push_back(action);
 							}
-						for (int l = i - 1; l <= i + 1; l += 2)
-							for (int c = j - 2; c <= j + 2; c += 4)
+						for (int l = j - 1; l <= j + 1; l += 2)
+							for (int c = i - 2; c <= i + 2; c += 4)
 							{
 								Action action = { i,j,c,l };
 								if (etat.play(action, true))
@@ -182,85 +185,79 @@ class AI {
 		return actions;
 	}
 
-	struct Action_Value Valeur_Max(Chess etat, int alpha, int beta, int d)
+	Action_Value Valeur_Max(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
-			struct Action_Value act_val;
+			Action_Value act_val;
 			act_val.action = { -1,-1,-1,-1 };
 			act_val.value = Eval(etat);
 			return act_val;
 		}
 
 		int v = -INF;
-		Action next_action;
-		std::vector<Action> actions = Actions(etat, AI_SIDE);
+		Action next_action = { -1,-1,-1,-1 };
+		vector<Action> actions = Actions(etat, AI_SIDE);
 		for (auto action : actions)
 		{
 			int last_v = v;
-			v = std::fmax(v, Valeur_Min(Result(etat, action), alpha, beta, d + 1).value);
+			v = fmax(v, Valeur_Min(Result(etat, action), alpha, beta, d + 1).value);
 			if (v != last_v)
 				next_action = action;
 			if (v >= beta)
 			{
-				struct Action_Value act_val;
+				Action_Value act_val;
 				act_val.action = next_action;
 				act_val.value = v;
 				return act_val;
 			}
-			alpha = std::fmax(alpha, v);
+			alpha = fmax(alpha, v);
 		}
-		struct Action_Value act_val;
-		if (&next_action)
-		{
-			act_val.action = next_action;
-			act_val.value = v;
-		}
+		Action_Value act_val;
+		act_val.action = next_action;
+		act_val.value = v;
 		return act_val;
 	}
 
-	struct Action_Value Valeur_Min(Chess etat, int alpha, int beta, int d)
+	Action_Value Valeur_Min(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
-			struct Action_Value act_val;
+			Action_Value act_val;
 			act_val.action = { -1,-1,-1,-1 };
 			act_val.value = Eval(etat);
 			return act_val;
 		}
 
 		int v = INF;
-		Action next_action;
-		std::vector<Action> actions = Actions(etat, 1 - AI_SIDE);
+		Action next_action = { -1,-1,-1,-1 };
+		vector<Action> actions = Actions(etat, !AI_SIDE);
 		for (auto action : actions)
 		{
 			int last_v = v;
-			v = std::fmin(v, Valeur_Max(Result(etat, action), alpha, beta, d + 1).value);
+			v = fmin(v, Valeur_Max(Result(etat, action), alpha, beta, d + 1).value);
 			if (v != last_v)
 				next_action = action;
 			if (v <= alpha)
 			{
-				struct Action_Value act_val;
+				Action_Value act_val;
 				act_val.action = next_action;
 				act_val.value = v;
 				return act_val;
 			}
-			beta = std::fmin(beta, v);
+			beta = fmin(beta, v);
 		}
-		struct Action_Value act_val;
-		if (&next_action)
-		{
-			act_val.action = next_action;
-			act_val.value = v;
-		}
+		Action_Value act_val;
+		act_val.action = next_action;
+		act_val.value = v;
 		return act_val;
 	}
 
 
-	Chess Result(Chess& etat, const Action& action) const
+	Chess Result(const Chess& etat, const Action& action) const
 	{
 		Chess next_etat = etat;
-		next_etat.play(action.c1, action.l1, action.c2, action.l2);
+		next_etat.play(action);
 		return next_etat;
 	}
 public:

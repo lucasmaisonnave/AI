@@ -3,7 +3,7 @@
 using namespace std;
 #define CHESS_SIZE 8
 #define SGN(l) (l >= 0 ? 1 : -1)
-
+#define AI_SIDE NOIR
 enum PIECES { FOU, ROI, CAVALIER, PION, DAME, TOUR, VIDE };
 enum COULEUR { NOIR, BLANC };
 
@@ -20,40 +20,47 @@ typedef struct Action {
 class Chess {
 public:
 	Chess() {
-		//Nb pièces
-		Nb_Piece[BLANC][FOU] = Nb_Piece[BLANC][CAVALIER] = Nb_Piece[BLANC][TOUR] = 2;
-		Nb_Piece[BLANC][PION] = 8;
-		Nb_Piece[BLANC][ROI] = 1;
-		Nb_Piece[BLANC][DAME] = 1;
-		for (int j = 0; j < 6; j++)
-			Nb_Piece[NOIR][j] = Nb_Piece[BLANC][j];
-		//Côté blanc
-		plateau[0][0].type = TOUR;
-		plateau[0][1].type = CAVALIER;
-		plateau[0][2].type = FOU;
-		plateau[0][3].type = DAME;
-		plateau[0][4].type = ROI;
-		plateau[0][5].type = FOU;
-		plateau[0][6].type = CAVALIER;
-		plateau[0][7].type = TOUR;
-		for (int j = 0; j < CHESS_SIZE; j++)
-		{
-			//On place (0,0) sur la tour blanche
-			plateau[0][j].couleur = BLANC;
-			plateau[1][j].type = PION;
-			plateau[1][j].couleur = BLANC;
-		}
-		//Côté noir
-		for (int j = 0; j < CHESS_SIZE; j++)
-		{
-			plateau[CHESS_SIZE - 1][j].type = plateau[0][j].type;
-			plateau[CHESS_SIZE - 2][j].type = plateau[1][j].type;
-			plateau[CHESS_SIZE - 1][j].couleur = NOIR;
-			plateau[CHESS_SIZE - 2][j].couleur = NOIR;
-		}
-		for (int i = 2; i < 6; i++)
+		int type[CHESS_SIZE][CHESS_SIZE] = {{TOUR, CAVALIER, FOU, ROI, DAME, FOU, CAVALIER, TOUR},
+											{PION, PION, PION, PION, PION, PION, PION, PION},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{PION, PION, PION, PION, PION, PION, PION, PION},
+											{TOUR, CAVALIER, FOU, ROI, DAME, FOU, CAVALIER, TOUR}};
+		int couleur[CHESS_SIZE][CHESS_SIZE] = {{BLANC, BLANC, BLANC, BLANC, BLANC, BLANC, BLANC, BLANC},
+											   {BLANC, BLANC, BLANC, BLANC, BLANC, BLANC, BLANC, BLANC},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {NOIR, NOIR, NOIR, NOIR, NOIR, NOIR, NOIR, NOIR},
+											   {NOIR, NOIR, NOIR, NOIR, NOIR, NOIR, NOIR, NOIR} };
+	
+		/*int type[CHESS_SIZE][CHESS_SIZE] = { {VIDE, VIDE, VIDE, ROI, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, PION, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, DAME, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											{ROI, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE} };
+		int couleur[CHESS_SIZE][CHESS_SIZE] = { {VIDE, VIDE, VIDE, BLANC, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, NOIR, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, NOIR, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+											   {NOIR, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE} };
+		*/
+		for(int i = 0; i < CHESS_SIZE; i++)
 			for (int j = 0; j < CHESS_SIZE; j++)
-				plateau[i][j].type = VIDE;
+			{
+				plateau[i][j].type = type[i][j];
+				plateau[i][j].couleur = couleur[i][j];
+				Nb_Piece[plateau[i][j].couleur][plateau[i][j].type]++;
+			}
 
 	}
 	Chess(const Chess& ch) {
@@ -74,6 +81,9 @@ public:
 	int getNb_Piece(int couleur, int type) const
 	{
 		return Nb_Piece[couleur][type];
+	}
+	int getScoreMat(int col) const {
+		return getNb_Piece(col, PION)*10 + getNb_Piece(col, CAVALIER) * 30 + getNb_Piece(col, FOU) * 30 + getNb_Piece(col, TOUR) * 50 + getNb_Piece(col, DAME) * 90 + getNb_Piece(col, ROI) * 900;
 	}
 	bool checkFouObstacle(int l1, int c1, int l2, int c2) const {
 		int sl = SGN(l2 - l1);
@@ -112,10 +122,18 @@ public:
 	//Retourne true s'il y a une menace sur la case (c,l), col étant la couleur du menacé
 	bool checkThreat(int c, int l, int col) {
 		for (int _c = 0; _c < CHESS_SIZE; _c++)
+		{
 			for (int _l = 0; _l < CHESS_SIZE; _l++)
+			{
 				if (plateau[_l][_c].type != VIDE && plateau[_l][_c].couleur != col)
+				{
 					if (play(_c, _l, c, l, true))
+					{
 						return true;
+					}
+				}
+			}
+		}
 		return false;
 	}
 	bool play(int c1, int l1, int c2, int l2, bool test = false) {
@@ -148,23 +166,26 @@ public:
 				pion_dame = true;
 			break;
 		case FOU:
-			//On vérifie qu'il n'y a pas d'obstacle
+			//On vérifie qu'il n'y a pas d'obstacle + on est sur la diagonale
 			if (!checkFouObstacle(l1, c1, l2, c2))
 				return false;
 			break;
 		case TOUR:
-			//Vérifier s'il n'y pas d'obstacle entre p1 et p2
+			//Vérifier s'il n'y pas d'obstacle entre p1 et p2 + on est en ligne
 			if (!checkTourObstacle(l1, c1, l2, c2))
 				return false;
 			//On test si la tour bouge => pas de rock possible
-			if (l1 == 0 && c1 == 0)
-				Tour_mov[BLANC][0] = true;
-			else if (l1 == CHESS_SIZE - 1 && c1 == 0)
-				Tour_mov[NOIR][0] = true;
-			else if (l1 == 0 && c1 == CHESS_SIZE - 1)
-				Tour_mov[BLANC][1] = true;
-			else if (l1 == CHESS_SIZE - 1 && c1 == CHESS_SIZE - 1)
-				Tour_mov[NOIR][1] = true;
+			if (!test)
+			{
+				if (l1 == 0 && c1 == 0)
+					Tour_mov[BLANC][0] = true;
+				else if (l1 == CHESS_SIZE - 1 && c1 == 0)
+					Tour_mov[NOIR][0] = true;
+				else if (l1 == 0 && c1 == CHESS_SIZE - 1)
+					Tour_mov[BLANC][1] = true;
+				else if (l1 == CHESS_SIZE - 1 && c1 == CHESS_SIZE - 1)
+					Tour_mov[NOIR][1] = true;
+			}
 
 			break;
 		case CAVALIER:
@@ -185,26 +206,39 @@ public:
 			{
 				//Test des obstacles entre le roi et la tour
 				for (int c = c1 + s; c != (s > 0 ? CHESS_SIZE - 1 : 0); c += s)
+				{
 					if (plateau[l1][c].type != VIDE)
+					{
 						return false;
+					}
+				}
 				//Test des menaces, ici on test aussi la case du roi et de la tour
 				for (int c = c1; c != (s > 0 ? CHESS_SIZE - 1 : 0) + s; c += s)
+				{
 					if (checkThreat(c, l1, plateau[l1][c1].couleur))
+					{
 						return false;
+					}
+				}
 				//On met la tour à côté du roi
-				if (!test) {
-					plateau[l2][c2 - s].type = TOUR;
-					plateau[plateau[l2][c2].couleur == NOIR ? CHESS_SIZE - 1 : 0][s > 0 ? CHESS_SIZE - 1 : 0].type = VIDE;
+				if (!test) 
+				{
+					plateau[l1][c2 - s].type = TOUR;
+					plateau[l1][c2 - s].couleur = plateau[l1][c1].couleur;
+					plateau[l1][s > 0 ? CHESS_SIZE - 1 : 0].type = VIDE;
 				}
 			}
 			//Sinon on bouge de 1
 			else if (!(abs(l1 - l2) <= 1 && abs(c1 - c2) <= 1))
+			{
 				return false;
-
+			}
 			//Mise à jour de Roi_mov
-			Roi_mov[plateau[l1][c1].couleur] = true;//On va bouger le roi donc on le marque dans le tableau qui permet de rock
+			if(!test)
+				Roi_mov[plateau[l1][c1].couleur] = true;//On va bouger le roi donc on le marque dans le tableau qui permet de rock
 			break;
 		}
+		//On bouge la pièce
 		if (!test) {
 			if (plateau[l2][c2].type != VIDE)
 				Nb_Piece[plateau[l2][c2].couleur][plateau[l2][c2].type]--;
@@ -227,5 +261,5 @@ private:
 	//Pour rock
 	bool Roi_mov[2] = { false, false };
 	bool Tour_mov[2][2] = { {false, false}, {false, false} };//(couleur, dir)
-	int Nb_Piece[2][6];//Nombre de pièces par type et couleur
+	int Nb_Piece[2][6] = { {0,0,0,0,0,0}, {0,0,0,0,0,0}};//Nombre de pièces par type et couleur
 };
