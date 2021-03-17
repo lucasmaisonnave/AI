@@ -67,5 +67,5 @@ Here you can play the game of life, you can stop time by clicking shift button a
 
 ## Chess
 
-
+![AI Design](images/chess.JPG)
 
