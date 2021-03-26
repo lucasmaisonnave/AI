@@ -10,14 +10,14 @@ int nb_coups = 0;
 typedef struct Action_Value
 {
 	Action action;
-	int value;
+	double value;
 };
 class AI {
 private:
-	int Eval(const Chess& etat)
+	double Eval(const Chess& etat)
 	{
 		//if(nb_coups < NB_COUPS)
-			return Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size() + etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
+			return (double)(Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size()) + double(etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE));
 		//return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
 
 	}
@@ -107,7 +107,7 @@ private:
 		}
 	}
 
-	vector<Action> Actions(Chess etat, int col)	//Retourne les actions possibles sur état
+	vector<Action> Actions(Chess etat, int col)	//Retourne les actions possibles sur ï¿½tat
 	{
 		vector<Action> actions;
 		for (int i = 0; i < CHESS_SIZE; i++)
@@ -185,7 +185,7 @@ private:
 		return actions;
 	}
 
-	Action_Value Valeur_Max(Chess etat, int alpha, int beta, int d)
+	Action_Value Valeur_Max(Chess etat, double alpha, double beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
@@ -195,12 +195,12 @@ private:
 			return act_val;
 		}
 
-		int v = -INF;
+		double v = -INF;
 		Action next_action = { -1,-1,-1,-1 };
 		vector<Action> actions = Actions(etat, AI_SIDE);
 		for (auto action : actions)
 		{
-			int last_v = v;
+			double last_v = v;
 			v = fmax(v, Valeur_Min(Result(etat, action), alpha, beta, d + 1).value);
 			if (v != last_v)
 				next_action = action;
@@ -219,7 +219,7 @@ private:
 		return act_val;
 	}
 
-	Action_Value Valeur_Min(Chess etat, int alpha, int beta, int d)
+	Action_Value Valeur_Min(Chess etat, double alpha, double beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
@@ -229,12 +229,12 @@ private:
 			return act_val;
 		}
 
-		int v = INF;
+		double v = INF;
 		Action next_action = { -1,-1,-1,-1 };
 		vector<Action> actions = Actions(etat, !AI_SIDE);
 		for (auto action : actions)
 		{
-			int last_v = v;
+			double last_v = v;
 			v = fmin(v, Valeur_Max(Result(etat, action), alpha, beta, d + 1).value);
 			if (v != last_v)
 				next_action = action;
@@ -261,7 +261,7 @@ private:
 		return next_etat;
 	}
 public:
-	Action AI_Play(Chess etat)	//Retourne l'action à effectuer
+	Action AI_Play(Chess etat)	//Retourne l'action ï¿½ effectuer
 	{
 		return Valeur_Max(etat, -INF, INF, 0).action;
 	}
