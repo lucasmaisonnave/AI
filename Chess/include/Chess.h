@@ -89,13 +89,12 @@ public:
 	bool checkFouObstacle(int l1, int c1, int l2, int c2) const {
 		int sl = SGN(l2 - l1);
 		int sc = SGN(c2 - c1);
-		int l = l1 + sl;
 		int c = c1 + sc;
 		//On test si le coup est sur un diagonale du fou
 		if (!(abs(c1 - c2) == abs(l1 - l2)))
 			return false;
 		//On test les obstacles
-		for (l; l != l2; l += sl, c += sc)
+		for (int l = l1 + sl; l != l2; l += sl, c += sc)
 			if (plateau[l][c].type != VIDE)
 				return false;
 		return true;
@@ -120,7 +119,7 @@ public:
 		}
 		return true;
 	}
-	//Retourne true s'il y a une menace sur la case (c,l), col étant la couleur du menacé
+	//Retourne true s'il y a une menace sur la case (c,l), col ï¿½tant la couleur du menacï¿½
 	bool checkThreat(int c, int l, int col) {
 		for (int _c = 0; _c < CHESS_SIZE; _c++)
 		{
@@ -140,9 +139,9 @@ public:
 	bool play(int c1, int l1, int c2, int l2, bool test = false) {
 		bool pion_dame = false; //vrai quand le pion doit se transformer en Dame
 
-		/*On test d'abord si le coup est valide sans tenir compte de type des pions à utiliser:
-		la case suivante ne doit pas être la même que celle de départ, la case à bouger n'est pas vide, la case où aller n'est pas pleine et pas de la même couleur
-		et les coordonnées rentrées sont bien dans le plateau
+		/*On test d'abord si le coup est valide sans tenir compte de type des pions ï¿½ utiliser:
+		la case suivante ne doit pas ï¿½tre la mï¿½me que celle de dï¿½part, la case ï¿½ bouger n'est pas vide, la case oï¿½ aller n'est pas pleine et pas de la mï¿½me couleur
+		et les coordonnï¿½es rentrï¿½es sont bien dans le plateau
 		*/
 		if (c1 >= CHESS_SIZE || c1 < 0 || l1 >= CHESS_SIZE || l1 < 0 || c2 >= CHESS_SIZE || c2 < 0 || l2 >= CHESS_SIZE || l2 < 0)
 			return false;
@@ -152,27 +151,27 @@ public:
 		switch (plateau[l1][c1].type)
 		{
 		case PION:
-			//On vérifie d'abord que le pion avance, rappel NOIR en bas avec (0,0) en haut à gauche
+			//On vï¿½rifie d'abord que le pion avance, rappel NOIR en bas avec (0,0) en haut ï¿½ gauche
 			if ((plateau[l1][c1].couleur == NOIR && l2 - l1 > 0) || (plateau[l1][c1].couleur == BLANC && l2 - l1 < 0))
 				return false;
-			//On bouge pas le pion à plus de 2 cases
+			//On bouge pas le pion ï¿½ plus de 2 cases
 			if (abs(l1 - l2) > 2)
 				return false;
 			//On autorise de bouger de 1 en diagonale s'il y a un pion adverse, on peut bouger de 1 vers le haut s'il n'y a pas d'obstacle 
-			//et on peut bouger de 2 vers le haut si le pion est sur sa case de départ et qu'il n'y pas de pion sur la case visé
+			//et on peut bouger de 2 vers le haut si le pion est sur sa case de dï¿½part et qu'il n'y pas de pion sur la case visï¿½
 			if (!((abs(c1 - c2) == 1 && abs(l1 - l2) == 1 && plateau[l2][c2].type != VIDE) || (abs(c1 - c2) == 0 && abs(l1 - l2) == 1 && plateau[l2][c2].type == VIDE) || (abs(c1 - c2) == 0 && abs(l1 - l2) == 2 && (((plateau[l1][c1].couleur == NOIR && l1 == CHESS_SIZE - 2) || (plateau[l1][c1].couleur == BLANC && l1 == 1)) && plateau[l2][c2].type == VIDE && plateau[l2 - SGN(l2 - l1)][c2].type == VIDE))))
 				return false;
-			//On test si le pion est sur la dernière ligne, on le transforme en Dame
+			//On test si le pion est sur la derniï¿½re ligne, on le transforme en Dame
 			if ((plateau[l1][c1].couleur == NOIR && l2 == 0) || (plateau[l1][c1].couleur == BLANC && l2 == CHESS_SIZE - 1))
 				pion_dame = true;
 			break;
 		case FOU:
-			//On vérifie qu'il n'y a pas d'obstacle + on est sur la diagonale
+			//On vï¿½rifie qu'il n'y a pas d'obstacle + on est sur la diagonale
 			if (!checkFouObstacle(l1, c1, l2, c2))
 				return false;
 			break;
 		case TOUR:
-			//Vérifier s'il n'y pas d'obstacle entre p1 et p2 + on est en ligne
+			//Vï¿½rifier s'il n'y pas d'obstacle entre p1 et p2 + on est en ligne
 			if (!checkTourObstacle(l1, c1, l2, c2))
 				return false;
 			//On test si la tour bouge => pas de rock possible
@@ -196,7 +195,7 @@ public:
 		case DAME:
 			if (!((abs(c1 - c2) == abs(l1 - l2)) || (c1 == c2 || l1 == l2)))
 				return false;
-			//On vérifie les obstacles
+			//On vï¿½rifie les obstacles
 			if (!(checkTourObstacle(l1, c1, l2, c2) || checkFouObstacle(l1, c1, l2, c2)))
 				return false;
 			break;
@@ -221,7 +220,7 @@ public:
 						return false;
 					}
 				}
-				//On met la tour à côté du roi
+				//On met la tour ï¿½ cï¿½tï¿½ du roi
 				if (!test) 
 				{
 					plateau[l1][c2 - s].type = TOUR;
@@ -234,12 +233,12 @@ public:
 			{
 				return false;
 			}
-			//Mise à jour de Roi_mov
+			//Mise ï¿½ jour de Roi_mov
 			if(!test)
 				Roi_mov[plateau[l1][c1].couleur] = true;//On va bouger le roi donc on le marque dans le tableau qui permet de rock
 			break;
 		}
-		//On bouge la pièce
+		//On bouge la piï¿½ce
 		if (!test) {
 			if (plateau[l2][c2].type != VIDE)
 				Nb_Piece[plateau[l2][c2].couleur][plateau[l2][c2].type]--;
@@ -262,5 +261,5 @@ private:
 	//Pour rock
 	bool Roi_mov[2] = { false, false };
 	bool Tour_mov[2][2] = { {false, false}, {false, false} };//(couleur, dir)
-	int Nb_Piece[2][6] = { {0,0,0,0,0,0}, {0,0,0,0,0,0}};//Nombre de pièces par type et couleur
+	int Nb_Piece[2][6] = { {0,0,0,0,0,0}, {0,0,0,0,0,0}};//Nombre de piï¿½ces par type et couleur
 };

@@ -1,9 +1,9 @@
 #define OLC_PGE_APPLICATION
 #define OLC_IMAGE_STB 
 #define OLC_PGE_APPLICATION
-#include "olcPixelGameEngine.h"
-#include "Chess.h"
-#include "AI.h"
+#include "./include/olcPixelGameEngine.h"
+#include "./include/Chess.h"
+#include "./include/AI.h"
 using namespace olc;
 using namespace std;
 #define LVL_MAX 7
