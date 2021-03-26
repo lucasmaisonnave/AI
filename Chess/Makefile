@@ -5,7 +5,7 @@
 # Compiler settings - Can be customized.
 CC = g++
 CXXFLAGS = -std=c++17 -Wall
-LDFLAGS = -lX11 -lGL -lpthread -lstdc++fs
+LDFLAGS = -lX11 -lGL -lpthread -lstdc++fs -lpng
 
 # Makefile settings - Can be customized.
 APPNAME = chessAI
