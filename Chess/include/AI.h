@@ -10,14 +10,15 @@ int nb_coups = 0;
 typedef struct Action_Value
 {
 	Action action;
-	double value;
-};
+	int value;
+}Action_Value;
+
 class AI {
 private:
-	double Eval(const Chess& etat)
+	int Eval(const Chess& etat)
 	{
-		//if(nb_coups < NB_COUPS)
-			return (double)(Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size()) + double(etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE));
+		//if(nb_coups < NB_COUPS)/*(int)(Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size()) + */
+			return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
 		//return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
 
 	}
@@ -185,7 +186,7 @@ private:
 		return actions;
 	}
 
-	Action_Value Valeur_Max(Chess etat, double alpha, double beta, int d)
+	Action_Value Valeur_Max(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
@@ -195,12 +196,12 @@ private:
 			return act_val;
 		}
 
-		double v = -INF;
+		int v = -INF;
 		Action next_action = { -1,-1,-1,-1 };
 		vector<Action> actions = Actions(etat, AI_SIDE);
 		for (auto action : actions)
 		{
-			double last_v = v;
+			int last_v = v;
 			v = fmax(v, Valeur_Min(Result(etat, action), alpha, beta, d + 1).value);
 			if (v != last_v)
 				next_action = action;
@@ -219,7 +220,7 @@ private:
 		return act_val;
 	}
 
-	Action_Value Valeur_Min(Chess etat, double alpha, double beta, int d)
+	Action_Value Valeur_Min(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
@@ -229,12 +230,12 @@ private:
 			return act_val;
 		}
 
-		double v = INF;
+		int v = INF;
 		Action next_action = { -1,-1,-1,-1 };
 		vector<Action> actions = Actions(etat, !AI_SIDE);
 		for (auto action : actions)
 		{
-			double last_v = v;
+			int last_v = v;
 			v = fmin(v, Valeur_Max(Result(etat, action), alpha, beta, d + 1).value);
 			if (v != last_v)
 				next_action = action;

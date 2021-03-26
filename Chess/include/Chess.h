@@ -11,13 +11,13 @@ int AI_SIDE = NOIR;
 typedef struct CASE {
 	int type;
 	int couleur;
-};
+}CASE;
 typedef struct Action {
 	int c1;
 	int l1;
 	int c2;
 	int l2;
-};
+}Action;
 class Chess {
 public:
 	Chess() {
