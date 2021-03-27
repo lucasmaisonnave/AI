@@ -17,8 +17,8 @@ class AI {
 private:
 	int Eval(const Chess& etat)
 	{
-		//if(nb_coups < NB_COUPS)/*(int)(Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size()) + */
-			return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
+		//if(nb_coups < NB_COUPS)/*(int)(+ */
+		return Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size() + etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
 		//return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
 
 	}
