@@ -75,6 +75,7 @@ public:
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 6; j++)
 				Nb_Piece[i][j] = ch.Nb_Piece[i][j];
+		who_plays = ch.who_plays;
 	}
 	CASE getCase(int colonne, int ligne) const {
 		return plateau[ligne][colonne];
@@ -85,6 +86,9 @@ public:
 	}
 	int getScoreMat(int col) const {
 		return getNb_Piece(col, PION)*10 + getNb_Piece(col, CAVALIER) * 30 + getNb_Piece(col, FOU) * 30 + getNb_Piece(col, TOUR) * 50 + getNb_Piece(col, DAME) * 90 + getNb_Piece(col, ROI) * 900;
+	}
+	uint8_t get_whoplays() const{
+		return who_plays;
 	}
 	bool checkFouObstacle(int l1, int c1, int l2, int c2) const {
 		int sl = SGN(l2 - l1);
@@ -250,16 +254,19 @@ public:
 				Nb_Piece[plateau[l2][c2].couleur][DAME]++;
 				plateau[l2][c2].type = DAME;
 			}
+			who_plays = !who_plays;
 		}
 		return true;
 	}
 	bool play(const Action& action, bool test = false) {
 		return play(action.c1, action.l1, action.c2, action.l2, test);
 	}
+	
 private:
 	CASE plateau[CHESS_SIZE][CHESS_SIZE]; //(ligne, colonne)
 	//Pour rock
 	bool Roi_mov[2] = { false, false };
 	bool Tour_mov[2][2] = { {false, false}, {false, false} };//(couleur, dir)
 	int Nb_Piece[2][6] = { {0,0,0,0,0,0}, {0,0,0,0,0,0}};//Nombre de pi�ces par type et couleur
+	uint8_t who_plays = BLANC;
 };
