@@ -187,7 +187,7 @@ private:
 		return actions;
 	}
 
-	Action_Value Val_Max(Chess etat, int alpha, int beta, int d)
+	Action_Value NegaMax(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
@@ -201,7 +201,7 @@ private:
 		for (auto action : actions)
 		{
 			int last_v = alpha; 
-			alpha = fmax(alpha, Val_Min(Result(etat, action), alpha, beta, d + 1).value);
+			alpha = fmax(alpha, -NegaMax(Result(etat, action), -beta, -alpha, d + 1).value);
 			if (alpha != last_v)
 				next_action = action;
 			if (alpha >= beta)
@@ -217,7 +217,7 @@ private:
 		act_val.value = alpha;
 		return act_val;
 	}
-	Action_Value Val_Min(Chess etat, int alpha, int beta, int d)
+	/*Action_Value Val_Min(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
 		{
@@ -246,7 +246,7 @@ private:
 		act_val.action = next_action;
 		act_val.value = beta;
 		return act_val;
-	}
+	}*/
 
 
 
@@ -259,6 +259,6 @@ private:
 public:
 	Action AI_Play(Chess etat)	//Retourne l'action � effectuer
 	{
-		return Val_Max(etat, -INF, INF, 0).action;
+		return NegaMax(etat, -INF, INF, 0).action;
 	}
 };
