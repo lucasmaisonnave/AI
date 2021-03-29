@@ -57,6 +57,9 @@ clean:
 cleandep:
 	$(RM) $(DEP)
 
+.PHONY: cleandep
+run:
+	./$(APPNAME)
 #################### Cleaning rules for Windows OS #####################
 # Cleans complete project
 .PHONY: cleanw
