@@ -109,13 +109,14 @@ public:
 	virtual bool OnUserUpdate(float fElapsedtime) override
 	{
 		
-		/*if (AI_PLAY && !end && start)
+		if (AI_PLAY && !end && start)
 		{
 			prec_action = ai.AI_Play(chess);
 			chess.play(prec_action);
 			nb_coups++;
 			AI_PLAY = false;
-		}	*/	
+			actions = ai.Actions(chess);
+		}
 		mousePos.x = GetMouseX(); mousePos.y = GetMouseY();
 		//On test les clics de souris
 		if (GetMouse(0).bPressed)
@@ -123,7 +124,7 @@ public:
 			if (PointInRect(mousePos, Plateau)) {
 				int x = AI_SIDE == BLANC ? (mousePos.x - x0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.x - x0) / nsquare_size;
 				int y = AI_SIDE == BLANC ? (mousePos.y - y0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.y - y0) / nsquare_size;
-				if (chess.getCase(x, y).couleur == chess.get_whoplays() && start) { //
+				if (chess.getCase(x, y).couleur != AI_SIDE && start) { //
 					pos_souris_prec.x = x;
 					pos_souris_prec.y = y;
 					Csouris = chess.getCase(x, y);
