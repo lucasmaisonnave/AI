@@ -189,9 +189,9 @@ private:
 
 	Action_Value NegaMax(Chess etat, int alpha, int beta, int d)
 	{
+		Action_Value act_val;
 		if (Test_Arret(etat, d))
 		{
-			Action_Value act_val;
 			act_val.action = { -1,-1,-1,-1 };
 			act_val.value = Eval(etat);
 			return act_val;
@@ -206,13 +206,11 @@ private:
 				next_action = action;
 			if (alpha >= beta)
 			{
-				Action_Value act_val;
 				act_val.action = next_action;
 				act_val.value = alpha;
 				return act_val;
 			}
 		}
-		Action_Value act_val;
 		act_val.action = next_action;
 		act_val.value = alpha;
 		return act_val;
