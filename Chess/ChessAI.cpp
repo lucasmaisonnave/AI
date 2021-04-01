@@ -32,7 +32,7 @@ class AIGame : public PixelGameEngine
 	v2d_generic<int> pos_souris_prec;
 	AI ai;
 	Action prec_action = { -1,-1,-1,-1 };
-
+    vector<Action> actions;
 	int nsquare_size = 80;
 	int x0;
 	int y0;
@@ -84,6 +84,9 @@ public:
 		Pions[BLANC][TOUR] = WR;
 		SetPixelMode(Pixel::MASK);
 		
+		//Actions possibles
+		actions = ai.Actions(chess);
+
 		//Init la souris
 		Csouris.couleur = NOIR;
 		Csouris.type = VIDE;
@@ -112,7 +115,8 @@ public:
 			chess.play(prec_action);
 			nb_coups++;
 			AI_PLAY = false;
-		}		
+			actions = ai.Actions(chess);
+		}
 		mousePos.x = GetMouseX(); mousePos.y = GetMouseY();
 		//On test les clics de souris
 		if (GetMouse(0).bPressed)
@@ -120,7 +124,7 @@ public:
 			if (PointInRect(mousePos, Plateau)) {
 				int x = AI_SIDE == BLANC ? (mousePos.x - x0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.x - x0) / nsquare_size;
 				int y = AI_SIDE == BLANC ? (mousePos.y - y0) / nsquare_size : CHESS_SIZE - 1 - (mousePos.y - y0) / nsquare_size;
-				if (chess.getCase(x, y).couleur != AI_SIDE && start) {
+				if (chess.getCase(x, y).couleur != AI_SIDE && start) { //
 					pos_souris_prec.x = x;
 					pos_souris_prec.y = y;
 					Csouris = chess.getCase(x, y);
@@ -151,6 +155,7 @@ public:
 				prec_action = { pos_souris_prec.x, pos_souris_prec.y, x, y };
 				AI_PLAY = !AI_PLAY;
 				nb_coups++;
+				actions = ai.Actions(chess);
 			}
 			
 			pos_souris_prec.x = -1;
@@ -200,6 +205,15 @@ public:
 			FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c1 : CHESS_SIZE - 1 - prec_action.c1) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l1 : CHESS_SIZE - 1 - prec_action.l1) * nsquare_size, nsquare_size, nsquare_size, BLUE);
 			FillRect(x0 + (AI_SIDE == BLANC ? prec_action.c2 : CHESS_SIZE - 1 - prec_action.c2) * nsquare_size, y0 + (AI_SIDE == BLANC ? prec_action.l2 : CHESS_SIZE - 1 - prec_action.l2) * nsquare_size, nsquare_size, nsquare_size, BLUE);
 		}
+		//Draw possible plays
+		for(int i = 0; i < actions.size(); i++)
+		{
+			if(actions[i].c1 == pos_souris_prec.x && actions[i].l1 == pos_souris_prec.y){
+				FillRect(x0 + (AI_SIDE == BLANC ? actions[i].c1 : CHESS_SIZE - 1 - actions[i].c1) * nsquare_size, y0 + (AI_SIDE == BLANC ? actions[i].l1 : CHESS_SIZE - 1 - actions[i].l1) * nsquare_size, nsquare_size, nsquare_size, DARK_RED);
+				FillRect(x0 + (AI_SIDE == BLANC ? actions[i].c2 : CHESS_SIZE - 1 - actions[i].c2) * nsquare_size, y0 + (AI_SIDE == BLANC ? actions[i].l2 : CHESS_SIZE - 1 - actions[i].l2) * nsquare_size, nsquare_size, nsquare_size, RED);
+			}
+		}
+		DrawString(0,0,"Actions : " + to_string(actions.size()),BLACK,2);
 		//Draw lines
 		for (int x = 0; x <= CHESS_SIZE; x++)
 			DrawLine(x0 + x * nsquare_size, y0, x0 + x * nsquare_size, y0 + CHESS_SIZE * nsquare_size, BLACK);

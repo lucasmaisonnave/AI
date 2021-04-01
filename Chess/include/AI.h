@@ -108,6 +108,74 @@ private:
 		}
 	}
 
+	Action_Value Val_Max(Chess etat, int alpha, int beta, int d)
+	{
+		if (Test_Arret(etat, d))
+		{
+			Action_Value act_val;
+			act_val.action = { -1,-1,-1,-1 };
+			act_val.value = Eval(etat);
+			return act_val;
+		}
+		Action next_action = { -1,-1,-1,-1 };
+		vector<Action> actions = Actions(etat);
+		for (auto action : actions)
+		{
+			int last_v = alpha; 
+			alpha = fmax(alpha, Val_Min(Result(etat, action), alpha, beta, d + 1).value);
+			if (alpha != last_v)
+				next_action = action;
+			if (alpha >= beta)
+			{
+				Action_Value act_val;
+				act_val.action = next_action;
+				act_val.value = alpha;
+				return act_val;
+			}
+		}
+		Action_Value act_val;
+		act_val.action = next_action;
+		act_val.value = alpha;
+		return act_val;
+	}
+	Action_Value Val_Min(Chess etat, int alpha, int beta, int d)
+	{
+		if (Test_Arret(etat, d))
+		{
+			Action_Value act_val;
+			act_val.action = { -1,-1,-1,-1 };
+			act_val.value = Eval(etat);
+			return act_val;
+		}
+		Action next_action = { -1,-1,-1,-1 };
+		vector<Action> actions = Actions(etat);
+		for (auto action : actions)
+		{
+			int last_v = beta; 
+			beta = fmin(beta, Val_Max(Result(etat, action), alpha, beta, d + 1).value);
+			if (beta != last_v)
+				next_action = action;
+			if (alpha >= beta)
+			{
+				Action_Value act_val;
+				act_val.action = next_action;
+				act_val.value = beta;
+				return act_val;
+			}
+		}
+		Action_Value act_val;
+		act_val.action = next_action;
+		act_val.value = beta;
+		return act_val;
+	}
+
+	Chess Result(const Chess& etat, const Action& action) const
+	{
+		Chess next_etat = etat;
+		next_etat.play(action);
+		return next_etat;
+	}
+public:
 	vector<Action> Actions(Chess etat)	//Retourne les actions possibles sur �tat
 	{
 		vector<Action> actions;
@@ -186,77 +254,6 @@ private:
 				}
 		return actions;
 	}
-
-	Action_Value Val_Max(Chess etat, int alpha, int beta, int d)
-	{
-		if (Test_Arret(etat, d))
-		{
-			Action_Value act_val;
-			act_val.action = { -1,-1,-1,-1 };
-			act_val.value = Eval(etat);
-			return act_val;
-		}
-		Action next_action = { -1,-1,-1,-1 };
-		vector<Action> actions = Actions(etat);
-		for (auto action : actions)
-		{
-			int last_v = alpha; 
-			alpha = fmax(alpha, Val_Min(Result(etat, action), alpha, beta, d + 1).value);
-			if (alpha != last_v)
-				next_action = action;
-			if (alpha >= beta)
-			{
-				Action_Value act_val;
-				act_val.action = next_action;
-				act_val.value = alpha;
-				return act_val;
-			}
-		}
-		Action_Value act_val;
-		act_val.action = next_action;
-		act_val.value = alpha;
-		return act_val;
-	}
-	Action_Value Val_Min(Chess etat, int alpha, int beta, int d)
-	{
-		if (Test_Arret(etat, d))
-		{
-			Action_Value act_val;
-			act_val.action = { -1,-1,-1,-1 };
-			act_val.value = Eval(etat);
-			return act_val;
-		}
-		Action next_action = { -1,-1,-1,-1 };
-		vector<Action> actions = Actions(etat);
-		for (auto action : actions)
-		{
-			int last_v = beta; 
-			beta = fmin(beta, Val_Max(Result(etat, action), alpha, beta, d + 1).value);
-			if (beta != last_v)
-				next_action = action;
-			if (alpha >= beta)
-			{
-				Action_Value act_val;
-				act_val.action = next_action;
-				act_val.value = beta;
-				return act_val;
-			}
-		}
-		Action_Value act_val;
-		act_val.action = next_action;
-		act_val.value = beta;
-		return act_val;
-	}
-
-
-
-	Chess Result(const Chess& etat, const Action& action) const
-	{
-		Chess next_etat = etat;
-		next_etat.play(action);
-		return next_etat;
-	}
-public:
 	Action AI_Play(Chess etat)	//Retourne l'action � effectuer
 	{
 		return Val_Max(etat, -INF, INF, 0).action;
