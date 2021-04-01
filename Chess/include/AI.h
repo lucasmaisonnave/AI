@@ -108,8 +108,6 @@ private:
 		}
 	}
 
-	
-
 	Action_Value Val_Max(Chess etat, int alpha, int beta, int d)
 	{
 		if (Test_Arret(etat, d))
