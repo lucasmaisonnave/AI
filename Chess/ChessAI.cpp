@@ -1,6 +1,5 @@
 #define OLC_PGE_APPLICATION
-#define OLC_IMAGE_STB 
-#define OLC_PGE_APPLICATION
+//#define OLC_IMAGE_STB 
 #include "./include/olcPixelGameEngine.h"
 #include "./include/Chess.h"
 #include "./include/AI.h"
@@ -163,7 +162,7 @@ public:
 			
 			Csouris.type = VIDE;
 		}
-		else if (GetMouse(1).bPressed)//Clic gauche => reset
+		else if (GetMouse(1).bPressed)//Clic droit => reset
 		{
 			chess = Chess();
 			AI_PLAY = AI_SIDE == BLANC ? 1 : 0;
@@ -213,7 +212,7 @@ public:
 				FillRect(x0 + (AI_SIDE == BLANC ? actions[i].c2 : CHESS_SIZE - 1 - actions[i].c2) * nsquare_size, y0 + (AI_SIDE == BLANC ? actions[i].l2 : CHESS_SIZE - 1 - actions[i].l2) * nsquare_size, nsquare_size, nsquare_size, RED);
 			}
 		}
-		DrawString(0,0,"Actions : " + to_string(actions.size()),BLACK,2);
+		DrawString(10,5,"Actions : " + to_string(actions.size()) + " Eval : " + to_string(chess.getScoreMat(AI_SIDE) - chess.getScoreMat(!AI_SIDE)),BLACK,2);
 		//Draw lines
 		for (int x = 0; x <= CHESS_SIZE; x++)
 			DrawLine(x0 + x * nsquare_size, y0, x0 + x * nsquare_size, y0 + CHESS_SIZE * nsquare_size, BLACK);
