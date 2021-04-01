@@ -17,9 +17,20 @@ class AI {
 private:
 	int Eval(const Chess& etat)
 	{
-		//if(nb_coups < NB_COUPS)/*(int)(+ (Actions(etat, AI_SIDE).size() - Actions(etat, !AI_SIDE).size())/2 +*/
-		return  etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
-		//return etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE);
+		//Ajout de l'heuristic qui compte le nombre de case non menacé pour chaque couleur
+		int threat_score = 0;
+		Chess etat_s = etat;
+		etat_s.set_whoplays(!AI_SIDE);
+		vector<Action> actions_ai_side = Actions(etat);
+		vector<Action> actions_not_ai_side = Actions(etat_s);
+		for(int i = 0; i < actions_ai_side.size(); i++)
+			if((etat.getCase(actions_ai_side[i].c2 ,actions_ai_side[i].l2).type != VIDE && etat.getCase(actions_ai_side[i].c2 ,actions_ai_side[i].l2).couleur == !AI_SIDE))
+				threat_score++;
+		for(int i = 0; i < actions_not_ai_side.size(); i++)
+			if((etat.getCase(actions_not_ai_side[i].c2 ,actions_not_ai_side[i].l2).type != VIDE && etat.getCase(actions_not_ai_side[i].c2 ,actions_not_ai_side[i].l2).couleur == AI_SIDE))
+				threat_score--;
+		return  etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE) + threat_score*10;
+
 
 	}
 

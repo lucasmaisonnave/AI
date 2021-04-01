@@ -90,6 +90,9 @@ public:
 	uint8_t get_whoplays() const{
 		return who_plays;
 	}
+	void set_whoplays(uint8_t wp){
+		who_plays = wp;
+	}
 	bool checkFouObstacle(int l1, int c1, int l2, int c2) const {
 		int sl = SGN(l2 - l1);
 		int sc = SGN(c2 - c1);
