@@ -17,7 +17,7 @@ class AI {
 private:
 	int Eval(const Chess& etat)
 	{
-		//Ajout de l'heuristic qui compte le nombre de case non menacé pour chaque couleur
+		//Ajout de l'heuristic qui compte le nombre de cases menacés pour chaque couleur
 		int threat_score = 0;
 		Chess etat_s = etat;
 		etat_s.set_whoplays(!AI_SIDE);
@@ -29,6 +29,7 @@ private:
 		for(int i = 0; i < actions_not_ai_side.size(); i++)
 			if((etat.getCase(actions_not_ai_side[i].c2 ,actions_not_ai_side[i].l2).type != VIDE && etat.getCase(actions_not_ai_side[i].c2 ,actions_not_ai_side[i].l2).couleur == AI_SIDE))
 				threat_score--;
+		//h = material_score + threat_score*10
 		return  etat.getScoreMat(AI_SIDE) - etat.getScoreMat(!AI_SIDE) + threat_score*10;
 
 

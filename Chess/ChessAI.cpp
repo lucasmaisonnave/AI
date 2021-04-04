@@ -169,6 +169,7 @@ public:
 			start = end = false;
 			nb_coups = 0;
 			prec_action = { -1,-1,-1,-1 };
+			actions = ai.Actions(chess);
 		}
 
 		//Première couche en blanc
