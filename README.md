@@ -2,7 +2,7 @@
 Here are my differents AI programs in C++ which implement and solve differents games like the minesweeper game, the sliding puzzle, sudoku, tic tac toe, the game of life and chess
 
 ## Installation/Execution
-I recommand using Visual Studio or CLion to built and compile without makefile.
+These programs are design to work on Linux only. You just have to clone this repository and execute the makefile for each project
 
 
 ## Minesweeper
