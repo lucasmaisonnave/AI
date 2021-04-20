@@ -1002,7 +1002,8 @@ namespace olc
 
 	Sprite::Sprite(const std::string& sImageFile, olc::ResourcePack* pack)
 	{
-		LoadFromFile(sImageFile, pack);
+		if (LoadFromFile(sImageFile, pack) == olc::rcode::NO_FILE)
+			std::cout << "NO file" << std::endl;
 	}
 
 	Sprite::Sprite(int32_t w, int32_t h)

@@ -1,7 +1,7 @@
 // Sudoku.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 //
 #define OLC_PGE_APPLICATION
-#include "olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 #include <queue>
 using namespace olc;
 using namespace std;

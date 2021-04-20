@@ -1,10 +1,11 @@
 // Démineur.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 //
 #define OLC_PGE_APPLICATION
-#include "olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 #include <random>
+#include <vector>
 using namespace olc;
-
+using namespace std;
 #define DEM_SIZE 30
 const int NB_BOMB = (int)DEM_SIZE * DEM_SIZE * 0.15;
 #define AI 1
@@ -44,9 +45,9 @@ public:
 	struct sCase tdemineur[DEM_SIZE * DEM_SIZE];
 
 
-	int* KparmiN(int x, int y)	//Return le nombre de bombes parmi le nombre de case non découverte autour de la case x, y
+	vector<int> KparmiN(int x, int y)	//Return le nombre de bombes parmi le nombre de case non découverte autour de la case x, y
 	{
-		int ret[2]; //(k,n)
+		vector<int> ret(2); //(k,n)
 		int nb_unkown_bombe = tdemineur[y * DEM_SIZE + x].nb_bomb_arround;
 		int nb_unrevealed = 8;
 
@@ -219,7 +220,7 @@ public:
 				{
 					if (tdemineur[y * DEM_SIZE + x].revealed && UnrevealedNeighboors(x, y))
 					{
-						int* KN = KparmiN(x, y);
+						vector<int> KN = KparmiN(x, y);
 						if (KN[0] == KN[1])	//Cas où il y k bomdes parmi k cases donc elles doivent être toutes flaged
 						{
 							for (int i = 0; i < 3; i++)

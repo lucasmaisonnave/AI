@@ -2,10 +2,10 @@
 //
 #define OLC_PGE_APPLICATION
 
-#include "olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 
 #include <ctime>
-
+#include <unistd.h>
 using namespace olc;
 using namespace std;         
 #include <random>
@@ -330,7 +330,6 @@ public:
 			{
 				chemin.path.push_back(parent);
 				chemin.nbStep++;
-				printState(parent);
 				parent = parent->parent;
 			}
 			currentNodePath = chemin.path.size() - 1;
@@ -345,7 +344,7 @@ public:
 		{
 			DrawNode(chemin.path[currentNodePath], ScreenWidth() / 2 - (int)(TAQUIN_SIZE * nCaseSize / 2.0f), ScreenHeight() / 2 - TAQUIN_SIZE * nCaseSize / 2);
 			currentNodePath--;
-			Sleep(800);
+			usleep(500*1000);
 		}
 		else
 			chemin.path.clear();

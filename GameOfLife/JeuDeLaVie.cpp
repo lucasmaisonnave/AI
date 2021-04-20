@@ -1,8 +1,9 @@
 // JeuDeLaVie.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 //
 #define OLC_PGE_APPLICATION
-
-#include "olcPixelGameEngine.h"
+#define TIME_SAMPLE 20 //Time between 2 images
+#include "../olcPixelGameEngine.h"
+#include <unistd.h>
 using namespace olc;
 
 class JDLV : public PixelGameEngine
@@ -13,8 +14,7 @@ public:
 		sAppName = "Jeu de la Vie";
 	}
 
-	int* nInput = nullptr;
-	int* nOutput = nullptr;
+	
 
 	virtual bool OnUserCreate() override
 	{
@@ -56,7 +56,7 @@ public:
 
 	virtual bool OnUserUpdate(float fElapsedTime) override
 	{
-		Sleep(10);
+		usleep(TIME_SAMPLE*1000);
 		int nMouseX = GetMouseX();
 		int nMouseY = GetMouseY();
 		//Affichage
@@ -91,6 +91,9 @@ public:
 
 		return true;
 	}
+private:
+	int* nInput = nullptr;
+	int* nOutput = nullptr;
 };
 
 int main()
