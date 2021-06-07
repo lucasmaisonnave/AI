@@ -5,6 +5,7 @@
 #include "./include/AI.h"
 using namespace olc;
 using namespace std;
+
 #define LVL_MAX 9
 struct Rect
 {

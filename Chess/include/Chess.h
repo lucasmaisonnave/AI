@@ -5,6 +5,7 @@ using namespace std;
 #define SGN(l) (l >= 0 ? 1 : -1)
 
 
+
 enum PIECES { FOU, ROI, CAVALIER, PION, DAME, TOUR, VIDE };
 enum COULEUR { NOIR, BLANC };
 int AI_SIDE = NOIR;

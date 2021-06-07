@@ -10,7 +10,7 @@ LDFLAGS = -lX11 -lGL -lpthread -lstdc++fs -lpng
 # Makefile settings - Can be customized.
 APPNAME = chessAI
 EXT = .cpp
-SRCDIR = /home/lucasmaisonnave/Bureau/AI/Chess
+SRCDIR = .
 OBJDIR = obj
 
 ############## Do not change anything from here downwards! #############
